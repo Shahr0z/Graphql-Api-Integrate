@@ -1,6 +1,9 @@
+import { SafeAreaView, LogBox } from 'react-native';
 import React from 'react';
 import Home from './src/pages/Home';
-import { SafeAreaView } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
 function App() {
     return (
         <SafeAreaView style={{ flex: 1 }}>

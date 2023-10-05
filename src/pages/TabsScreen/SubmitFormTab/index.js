@@ -8,19 +8,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SubmitFormTab = () => {
 
-    const [name, setName] = useState()
+    const [name, setName] = useState('');
+    const [comment, setComment] = useState('');
+    const [image_url, setImageUrl] = useState('');
     const nameRef = useRef()
+    const commRef = useRef()
+    const imageRef = useRef()
+
     const [addCheckIn, { loading, error }] = useMutation(Add_check_in);
 
     const handleAddCheckIn = async () => {
         try {
             const response = await addCheckIn({
                 variables: {
-                    check_in: { name: name },
+                    check_in: {
+                        name: name,
+                        comment: comment,
+                        image_url: image_url,
+                    },
                 },
             });
-            console.log(response.data);
+            console.log('line 22==>', response.data);
             nameRef.current.clear()
+            commRef.current.clear()
+            imageRef.current.clear()
         } catch (error) {
             console.error(error);
         }
@@ -38,8 +49,12 @@ const SubmitFormTab = () => {
                         placeholder='Name'
                         onChangeText={setName}
                     />
-                    <CustomTextInput placeholder='Comment' />
-                    <CustomTextInput placeholder='ImageUrl' />
+                    <CustomTextInput
+                        inputRef={commRef}
+                        placeholder='Comment' onChangeText={setComment} />
+                    <CustomTextInput
+                        inputRef={imageRef}
+                        placeholder='ImageUrl' onChangeText={setImageUrl} />
 
                     <TouchableOpacity style={{ width: '100%' }} onPress={() => { handleAddCheckIn() }} >
                         <CustomButton Title={loading ? <ActivityIndicator size={'small'} color={Colors.white} /> : 'ADD'} />
